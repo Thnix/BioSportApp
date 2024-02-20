@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="BioSportApp.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:BioSportApp"
+    xmlns:routinePages="clr-namespace:BioSportApp.Pages.Routine"
+    xmlns:measurePages="clr-namespace:BioSportApp.Pages.Measure"
+    Shell.FlyoutBehavior="Flyout"
+    Shell.TabBarIsVisible="True"
+    Title="Inicio"
+    FlyoutBackgroundColor="#F17E38"
+    Shell.BackgroundColor="#F17E38"
+    Shell.TabBarBackgroundColor="#F17E38"
+    >
+
+    <Shell.FlyoutHeader>
+
+        <FlexLayout Direction="Column">
+
+            <Image Source="biosport_logo.png" HeightRequest="150"></Image>
+
+
+
+            <BoxView HeightRequest="1" Color="White"></BoxView>
+
+        </FlexLayout>
+
+
+
+
+        
+    </Shell.FlyoutHeader>
+
+    <TabBar>
+        <ShellContent 
+            Title="Rutinas"
+            ContentTemplate="{DataTemplate routinePages:RoutineListPage}"
+            Route="RoutineListPage"
+            Icon="dumbbell.png" >
+
+            <Shell.TitleView>
+                <Label
+                    Text="Rutinas"
+                    FontFamily="ParsiBold"
+                    TextColor="Black"
+                    FontSize="Title"
+                    VerticalTextAlignment="Center"
+                    />
+            </Shell.TitleView>
+        </ShellContent>
+
+        <ShellContent 
+            Title="Mediciones"
+            ContentTemplate="{DataTemplate measurePages:MeasurementsPage}"
+            Route="MeasurementsPage"
+            Icon="weight.png">
+
+            <Shell.TitleView>
+                <Label
+                    Text="Mediciones"
+                    FontFamily="ParsiBold"
+                    TextColor="Black"
+                    FontSize="Title"
+                    VerticalTextAlignment="Center"
+                    />
+            </Shell.TitleView>
+        </ShellContent>
+    </TabBar>
+
+    <Shell.FlyoutFooter>
+
+        <FlexLayout Direction="Column">
+            <BoxView HeightRequest="1" Color="White"></BoxView>
+
+            <Label
+                Margin="0,5,0,0"
+                Text="copyright© 2024 Anthony Martínez" 
+                HorizontalTextAlignment="Center"
+            />
+
+
+        </FlexLayout>
+    </Shell.FlyoutFooter>
+</Shell>

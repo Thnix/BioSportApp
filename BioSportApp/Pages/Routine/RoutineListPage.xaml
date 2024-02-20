@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BioSportApp.Pages.Routine.RoutineListPage"
+             Title="Rutinas"
+             xmlns:routineModels="clr-namespace:BioSportApp.Models.Routine"
+             xmlns:common="clr-namespace:BioSportApp.Common"
+             xmlns:viewModel="clr-namespace:BioSportApp.ViewModels.Routine"
+             x:DataType="viewModel:RoutineListPageViewModel"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             BackgroundColor="White"
+             >
+    <ContentPage.Resources>
+        <Style TargetType="Border">
+            <Setter Property="VisualStateManager.VisualStateGroups">
+                <VisualStateGroupList>
+                    <VisualStateGroup x:Name="CommonStates">
+                        <VisualState x:Name="Normal" >
+                            <VisualState.Setters>
+                                <Setter Property="BackgroundColor" Value="#FCF8F4" />
+                            </VisualState.Setters>
+                        </VisualState>
+                        <VisualState x:Name="Selected">
+                            <VisualState.Setters>
+                                <Setter Property="BackgroundColor"
+                                        Value="#F07E39" />
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateGroupList>
+            </Setter>
+        </Style>
+    </ContentPage.Resources>
+    
+    <AbsoluteLayout>
+        <CollectionView 
+            x:Name="cvRoutineList" 
+            ItemsSource="{Binding Routines}" 
+            SelectionMode="Single" 
+            SelectedItem="{Binding SelectedRoutine, Mode=TwoWay}"
+            AbsoluteLayout.LayoutBounds="1,1,1,1"
+            AbsoluteLayout.LayoutFlags="All"
+            >
+
+
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="{x:Type routineModels:RoutineAddModel}">
+                    <Border 
+                        Stroke="#E9BA76"
+                        StrokeThickness="1"
+                        >
+
+                        <Grid 
+                            
+                            RowDefinitions="25,*"
+                            RowSpacing="15"
+                            Padding="15"
+                            >
+                            <Label Grid.Row="0" Text="{Binding Name}" FontAttributes="Bold" TextColor="Black" FontSize="Medium" HorizontalOptions="Center"  />
+                            <Label Grid.Row="1" Text="{Binding Date}" TextColor="Black" FontSize="Small" HorizontalOptions="Center" />
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <ActivityIndicator 
+            IsVisible="{Binding IsInProgress}" 
+            IsRunning="{Binding IsInProgress}" 
+            BackgroundColor="Transparent"  
+            Color="#F07E39" 
+            AbsoluteLayout.LayoutBounds="0.5, 0.5, AutoSize, AutoSize" 
+            AbsoluteLayout.LayoutFlags="PositionProportional" 
+        />
+        <Button 
+            x:Name="newRoutine"
+            Text="{x:Static common:Icons.Plus}"
+            FontFamily="FASolid"
+            FontSize="Large"
+            AbsoluteLayout.LayoutFlags="PositionProportional"
+            AbsoluteLayout.LayoutBounds="1,1"
+            Margin="5"
+            Command="{Binding NewRoutineCommand}"
+            BackgroundColor="#FCC666"
+            CornerRadius="30"
+        />
+    </AbsoluteLayout>
+</ContentPage>

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BioSportApp.Pages.Routine.RoutineCreatePage"
+             xmlns:common="clr-namespace:BioSportApp.Common"
+             xmlns:exerciseModel="clr-namespace:BioSportApp.Models.Exercise"
+             xmlns:routineModel="clr-namespace:BioSportApp.Models.Routine"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:viewModel="clr-namespace:BioSportApp.ViewModels.Routine"
+             x:DataType="viewModel:RoutineCreatePageViewModel"
+             BackgroundColor="White"
+             Shell.TitleColor="Black"
+             >
+    <!--<ContentPage.Resources>
+        <ResourceDictionary>
+            <toolkit:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>-->
+
+    <Shell.TitleView>
+        <Label
+             Text="{Binding PageTitle}"
+             FontFamily="ParsiBold"
+             TextColor="Black"
+             FontSize="Title"
+             VerticalTextAlignment="Center"
+         />
+    </Shell.TitleView>
+
+    <AbsoluteLayout>
+        <ScrollView AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="1,1,1,1">
+            <FlexLayout Direction="Column">
+                <Entry  
+                    Placeholder="Nombre de la rutina" 
+                    Text="{Binding Routine.Name}" 
+                    TextColor="Black" 
+                    HorizontalTextAlignment="Center"
+                    FontSize="Title"
+                    FontAttributes="Bold"
+                    >
+                    <Entry.Behaviors>
+                        <toolkit:TextValidationBehavior
+                            x:Name="routineNameValidator"
+                            Flags="ValidateOnAttaching,ValidateOnValueChanged"
+                            MinimumLength="1"
+                            IsValid="{Binding IsRoutineNameValid}"
+                            />
+                    </Entry.Behaviors>
+                    
+                </Entry>
+                
+                <Label 
+                    Text="El nombre es requerido" 
+                    IsVisible="{Binding ShowError}"
+                    TextColor="#C63329" 
+                    FontAttributes="Bold"
+                    HorizontalTextAlignment="Center"
+                />
+
+
+                <CollectionView ItemsSource="{Binding ExerciseViewModel.Exercises}" Margin="0,5,0,0">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="exerciseModel:ExerciseAddModel">
+                            <Grid ColumnDefinitions="*" Margin="5" >
+                                <Border Padding="5">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="10" />
+                                    </Border.StrokeShape>
+
+                                    <Grid ColumnDefinitions="*,50,50,40" ColumnSpacing="10">
+                                        <Entry Grid.Column="0" Placeholder="Ejercicio" Text="{Binding Name}" TextColor="Black" />
+                                        <Entry Grid.Column="1" Placeholder="Series" Text="{Binding SetsNumber}" TextColor="Black" Keyboard="Numeric" />
+                                        <Entry Grid.Column="2" Placeholder="Reps" Text="{Binding Repetitions}" TextColor="Black" Keyboard="Numeric" />
+                                        <Button 
+                                            Text="X" 
+                                            FontAttributes="Bold"
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewModel:RoutineCreatePageViewModel}},Path=ExerciseViewModel.RemoveExerciseCommand}"  
+                                            CommandParameter="{Binding .}" 
+                                            BackgroundColor="#C63329"
+                                            Grid.Column="3"
+                                            />
+                                    </Grid>
+                                </Border>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <Button 
+                    Text="{x:Static common:Icons.Plus}" 
+                    FontFamily="FASolid"
+                    FontSize="Medium"
+                    HorizontalOptions="Start"
+                    Command="{Binding ExerciseViewModel.NewExerciseCommand}"
+                    BackgroundColor="#E9BA76"
+                    Margin="2"
+                />
+            </FlexLayout>
+        </ScrollView>
+
+        <Button
+            x:Name="btnSaveRoutine"
+            CommandParameter="{Binding Routine}"
+            Command="{Binding CreateOrUpdateRoutineCommand}"
+            FontFamily="FASolid"
+            Text="{x:Static common:Icons.FloppyDisk}"
+            FontSize="Medium"
+            AbsoluteLayout.LayoutFlags="PositionProportional"
+            AbsoluteLayout.LayoutBounds="1,1"
+            Margin="5"
+            BackgroundColor="#FBBD5C"
+        />
+
+    </AbsoluteLayout>
+</ContentPage>
