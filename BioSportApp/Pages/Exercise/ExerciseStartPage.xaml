@@ -43,7 +43,7 @@
                             <CollectionView ItemsSource="{Binding Sets}" Grid.Row="1" Margin="0,0,0,20">
                                 <CollectionView.Header>
                                     <Label
-                                        Text="{Binding Name, StringFormat='Press inclinado super pro con mancuernas triple giro{0}'}"
+                                        Text="{Binding Name}"
                                         TextColor="Black" 
                                         BackgroundColor="#FBBD5C" 
                                         HorizontalTextAlignment="Center"
