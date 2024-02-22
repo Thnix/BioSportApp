@@ -18,19 +18,40 @@ namespace BioSportApp.ViewModels.CustomPages
         [ObservableProperty]
         public ObservableCollection<ExerciseAddModel> routineExercises = [];
 
-        [RelayCommand]
-        public void AddExercise(Guid exerciseId)
-        {
-            var exercise = RoutineExercises.SingleOrDefault(e => e.Id == exerciseId);
+        [ObservableProperty]
+        public ExerciseAddModel selectedExercise = new();
 
-            if(exercise != null) 
+
+
+
+
+        partial void OnSelectedExerciseChanged(ExerciseAddModel value)
+        {
+            var exercise = RoutineExercises.SingleOrDefault(e => e.Id == SelectedExercise.Id);
+
+            if (exercise != null)
             {
                 WeakReferenceMessenger.Default.Send(new SendExerciseMessage(exercise));
             }
 
             ClosePopUp();
-     
+
         }
+
+        //[RelayCommand]
+        //public void AddExercise(Guid exerciseId)
+        //{
+
+        //    var exercise = RoutineExercises.SingleOrDefault(e => e.Id == SelectedExercise.Id);
+
+        //    if(exercise != null) 
+        //    {
+        //        WeakReferenceMessenger.Default.Send(new SendExerciseMessage(exercise));
+        //    }
+
+        //    ClosePopUp();
+     
+        //}
 
         [RelayCommand]
         public void ClosePopUp()

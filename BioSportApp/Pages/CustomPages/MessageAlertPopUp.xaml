@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                 xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+                 xmlns:popups="clr-namespace:BioSportApp.Pages.CustomPages"
+                 xmlns:common="clr-namespace:BioSportApp.Common"
+                 x:Class="BioSportApp.Pages.CustomPages.MessageAlertPopUp"
+                 xmlns:vm="clr-namespace:BioSportApp.ViewModels.CustomPages"
+                 x:DataType="vm:MessageAlertPopUpViewModel"
+             >
+
+    <toolkit:Popup.Resources>
+        <Style TargetType="{x:Type popups:MessageAlertPopUp}">
+            <!--<Setter Property="Size" Value="300,200" />-->
+            <Setter Property="Color" Value="Transparent"  />
+            <Setter Property="HorizontalOptions" Value="Center" />
+            <Setter Property="VerticalOptions" Value="Center" />
+            <Setter Property="CanBeDismissedByTappingOutsideOfPopup" Value="false" />
+        </Style>
+    </toolkit:Popup.Resources>
+
+        <VerticalStackLayout >
+            <Border Padding="20" BackgroundColor="{Binding BackgroundColor}">
+                <VerticalStackLayout>
+
+                    <Label 
+        Text="{x:Static common:Icons.Xmark}"
+        FontSize="Title"
+        FontAttributes="Bold"
+        FontFamily="FASolid"
+        TextColor="White"
+    
+       
+        VerticalOptions="CenterAndExpand"
+        HorizontalOptions="CenterAndExpand"
+
+        
+/>
+
+                    <Label 
+        Text="Error"
+        FontSize="Medium"
+        FontAttributes="Bold"
+        FontFamily="FASolid"
+        TextColor="White"
+    
+       
+        VerticalOptions="CenterAndExpand"
+        HorizontalOptions="CenterAndExpand"
+
+        
+/>
+
+                </VerticalStackLayout>
+
+               
+
+
+            </Border>
+
+            <Border Padding="20" BackgroundColor="White">
+                <Label 
+  
+        Text="{Binding Text}"
+        FontSize="Small"
+        TextColor="Black"
+  
+        
+        VerticalOptions="CenterAndExpand"
+        HorizontalOptions="CenterAndExpand"
+/>
+
+            </Border>
+            
+        </VerticalStackLayout>
+        
+   
+</toolkit:Popup>

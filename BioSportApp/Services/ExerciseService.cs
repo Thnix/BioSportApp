@@ -1,4 +1,5 @@
-﻿using BioSportApp.Domain;
+﻿using BioSportApp.Common.Messaging;
+using BioSportApp.Domain;
 using BioSportApp.Models.Exercise;
 using Mapster;
 using Microsoft.Maui.Controls;
@@ -20,44 +21,78 @@ namespace BioSportApp.Services
             connection = bioSportContext.GetConnection();
         }
 
-        public async Task<ExerciseAddModel> GetExerciseById(Guid id)
+        public async Task<Response<ExerciseAddModel>> GetExerciseById(Guid id)
         {
-            var exercise = await connection.GetWithChildrenAsync<Exercise>(id);
-
-            return exercise.Adapt<ExerciseAddModel>();
-        }
-
-        public async Task<List<ExerciseAddModel>> GetExercisesByRoutineId(Guid routineId)
-        {
-            var routineExercises = await connection.Table<Exercise>().Where(e => e.RoutineId == routineId).ToListAsync();
-
-            return routineExercises.Adapt<List<ExerciseAddModel>>();
-        }
-
-        public async Task SaveWorkout(ObservableCollection<ExerciseAddModel> exercises)
-        {
-            await connection.RunInTransactionAsync((SQLiteConnection transaction) =>
+            try
             {
-                foreach (var exercise in exercises)
+                var a = 1;
+                var b = 0;
+                var c = a / b;
+
+
+                var exercise = await connection.GetWithChildrenAsync<Exercise>(id);
+                return new Response<ExerciseAddModel> {  IsValid= true, Data = exercise.Adapt<ExerciseAddModel>() };
+            }
+            catch(Exception)
+            {
+                return new Response<ExerciseAddModel> { IsValid = false, Data = null, Message = "No se pudo cargar el ejercicio." };
+            }
+        }
+
+        public async Task<Response<List<ExerciseAddModel>>> GetExercisesByRoutineId(Guid routineId)
+        {
+            try
+            {
+                var routineExercises = await connection.Table<Exercise>().Where(e => e.RoutineId == routineId).ToListAsync();
+                return new Response<List<ExerciseAddModel>> { IsValid = true, Data = routineExercises.Adapt<List<ExerciseAddModel>>() };
+            }
+            catch (Exception)
+            {
+                return new Response<List<ExerciseAddModel>> { IsValid = false, Data = null, Message = "No se pudieron cargar los ejercicios." };
+            }
+        }
+
+        public async Task<Response<BaseResponse>> SaveWorkout(ObservableCollection<ExerciseAddModel> exercises)
+        {
+            try
+            {
+                await connection.RunInTransactionAsync((SQLiteConnection transaction) =>
                 {
-                    foreach (var set in exercise.Sets)
+                    foreach (var exercise in exercises)
                     {
-                        transaction.Delete(set.Adapt<Set>());
-                    }
-                }
-
-                foreach (var exercise in exercises)
-                {
-                    var exerciseToUpdate = exercise.Adapt<Exercise>();
-
-                    foreach (var set in exerciseToUpdate.Sets)
-                    {
-                        transaction.Insert(set);
+                        foreach (var set in exercise.Sets)
+                        {
+                            transaction.Delete(set.Adapt<Set>());
+                        }
                     }
 
-                    transaction.Update(exerciseToUpdate);
-                }
-            });
+                    foreach (var exercise in exercises)
+                    {
+                        var exerciseToUpdate = exercise.Adapt<Exercise>();
+
+                        foreach (var set in exerciseToUpdate.Sets)
+                        {
+                            transaction.Insert(set);
+                        }
+
+                        transaction.Update(exerciseToUpdate);
+                    }
+                });
+
+                //var a = 1;
+                //var b = 0;
+                //var c = a / b;
+
+                return new Response<BaseResponse> { IsValid = true, Message = "Entrenamiento guardado.", Data = null };
+            }
+            catch (SQLiteException)
+            {
+                return new Response<BaseResponse> { IsValid = false, Message = "Ha ocurrido un error con la base de datos.", Data = null };
+            }
+            catch (Exception)
+            {
+                return new Response<BaseResponse> { IsValid = false, Message = "Ha ocurrido un error inesperado.", Data = null };
+            }
         }
     }
 }

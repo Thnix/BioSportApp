@@ -103,6 +103,7 @@
                 FontSize="Small" 
                 BackgroundColor="#F07E39" 
                 Command="{Binding PLayOrPauseCommand}" 
+                CornerRadius="0"
                 FlexLayout.Grow="1"
             />
 

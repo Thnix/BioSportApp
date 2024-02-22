@@ -24,13 +24,17 @@
 
     <ContentPage.ToolbarItems>
         <ToolbarItem 
-            Text="Superserie" 
+            IconImageSource="checklist.png"
             Order="Primary" 
             Command="{Binding GetExercisesByRoutineIdCommand}"
             CommandParameter="{Binding Exercise.RoutineId}"
         />
-
-
+        <ToolbarItem 
+            IconImageSource="stopwatch.png"
+            Order="Primary" 
+            Command="{Binding ShowPopUpCommand}"
+            CommandParameter="{Binding Exercise.RoutineId}"  
+        />
     </ContentPage.ToolbarItems>
 
     <AbsoluteLayout>
@@ -47,9 +51,9 @@
                                         TextColor="Black" 
                                         BackgroundColor="#FBBD5C" 
                                         HorizontalTextAlignment="Center"
-                                        FontAttributes="Bold"
                                         FontSize="Medium"
                                         LineBreakMode="WordWrap"
+                                        FontAttributes="Bold"
                                         Padding="10"
                                         >
                                     </Label>
@@ -72,7 +76,7 @@
                                             </Grid>
                                             <BoxView Color="Black" HeightRequest="1" />
                                         </VerticalStackLayout>
-                                       
+
                                     </DataTemplate>
                                 </CollectionView.ItemTemplate>
                             </CollectionView>
@@ -82,25 +86,12 @@
 
                 <Button 
                     Text="Guardar" 
-                    BackgroundColor="#F07E39" 
-                    Margin="0,20,0,0"
+                    BackgroundColor="#E9BA76" 
+                    Margin="10"
                     Command="{Binding SaveWorkoutCommand}"
                     CommandParameter="{Binding WorkoutExercises}"
                 />
             </VerticalStackLayout>
         </ScrollView>
-
-        <Button
-            x:Name="btnShowStopWatch"
-            Command="{Binding ShowPopUpCommand}"
-            FontFamily="FASolid"
-            Text="{x:Static common:Icons.Stopwatch}"
-            FontSize="Large"
-            AbsoluteLayout.LayoutFlags="PositionProportional"
-            AbsoluteLayout.LayoutBounds="1,1"
-            Margin="5"
-            BackgroundColor="#FBBD5C"
-        />
     </AbsoluteLayout>
-   
 </ContentPage>

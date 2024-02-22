@@ -19,9 +19,8 @@
           VerticalTextAlignment="Center"
       />
     </Shell.TitleView>
-    
-    <ContentPage.ToolbarItems>
 
+    <ContentPage.ToolbarItems>
         <ToolbarItem 
             Text="Editar" 
             Order="Secondary" 
@@ -30,7 +29,8 @@
         />
 
         <ToolbarItem 
-            Text="Eliminar" Order="Secondary"  
+            Text="Eliminar" 
+            Order="Secondary"  
             CommandParameter="{Binding Routine.Id}" 
             Command="{Binding ShowPopUpDeleteRoutineCommand}"
         />

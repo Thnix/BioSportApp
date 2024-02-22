@@ -53,45 +53,24 @@
                 <CollectionView 
                     x:Name="routineExercises" 
                     ItemsSource="{Binding RoutineExercises}" 
-                    SelectionChangedCommand="{Binding AddExerciseCommand}" 
                     SelectionMode="Single"
+                    SelectedItem="{Binding SelectedExercise, Mode=TwoWay}"
                     
                     >
 
-                    <CollectionView.Behaviors>
-                        
-                        <toolkit:EventToCommandBehavior
-                            
-                            EventName="SelectionChanged"
-                            Command="{Binding AddExerciseCommand}" 
-                            CommandParameter="{Binding }"
-                            />
-                        
-                    </CollectionView.Behaviors>
-                    
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="model:ExerciseAddModel">
                             <Border Margin="5" Padding="5" BackgroundColor="#FCF8F4" Stroke="#FBBD5C">
-                                <Label
-                                    Text="{Binding Name}"
-                                    TextColor="Black" 
-                                    FontSize="Medium" 
-                                    LineBreakMode="WordWrap"
-                                    >
-                                </Label>
-                                </Border>
-                              
-                                <!--<Button 
-                                    Grid.Column="1" 
-                                    Text="{x:Static common:Icons.Plus}" 
-                                    FontFamily="FASolid" 
-                                    FontSize="Medium"
-                                    FontAttributes="Bold"
-                                    Command="{Binding Path=BindingContext.AddExerciseCommand, Source={x:Reference routineExercises}}"
-                                    CommandParameter="{Binding Id}"
-                                    BackgroundColor="#FBBD5C"
-                                />-->
-                           
+                                <VerticalStackLayout>
+                                    <Label
+                                        Text="{Binding Name}"
+                                        TextColor="Black" 
+                                        FontSize="Medium" 
+                                        LineBreakMode="WordWrap"  
+                                    />
+                                </VerticalStackLayout>
+
+                            </Border>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>

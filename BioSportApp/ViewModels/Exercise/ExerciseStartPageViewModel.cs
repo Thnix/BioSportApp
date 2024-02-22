@@ -1,4 +1,5 @@
-﻿using BioSportApp.Models.Exercise;
+﻿using BioSportApp.Common.Messaging;
+using BioSportApp.Models.Exercise;
 using BioSportApp.Models.Set;
 using BioSportApp.Services;
 using BioSportApp.Utils.Messaging.Exercise;
@@ -10,7 +11,10 @@ using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using Mapster;
 using System.Collections.ObjectModel;
+using System.Runtime.InteropServices;
+using Font = Microsoft.Maui.Font;
 
 namespace BioSportApp.ViewModels.Exercise
 {
@@ -63,15 +67,27 @@ namespace BioSportApp.ViewModels.Exercise
 
         private async void LoadExercise()
         {
-            Exercise = await exerciseService.GetExerciseById(Guid.Parse(ExerciseId));
+            var response = await exerciseService.GetExerciseById(Guid.Parse(ExerciseId));
 
-            if (Exercise.Sets.Any())
+            if(response.IsValid && response.Data != null)
             {
-                WorkoutExercises.Add(Exercise);
+                Exercise = response.Data;
+
+                if (Exercise.Sets.Any())
+                {
+                    WorkoutExercises.Add(Exercise);
+                }
+                else
+                {
+                    AddWorkoutExercises(Exercise);
+                }
             }
             else
             {
-                AddWorkoutExercises(Exercise);
+                await Task.Delay(200);
+                await popupService.ShowPopupAsync<MessageAlertPopUpViewModel>(onPresenting: vm => vm.ClosePopUp(response.Adapt<PopUpData>()));
+                await Shell.Current.Navigation.PopAsync();
+
             }
         }
 
@@ -100,13 +116,22 @@ namespace BioSportApp.ViewModels.Exercise
         [RelayCommand]
         public async Task GetExercisesByRoutineId()
         {
-            RoutineExercises = new ObservableCollection<ExerciseAddModel>(await exerciseService.GetExercisesByRoutineId(Exercise.RoutineId));
+            var response = await exerciseService.GetExercisesByRoutineId(Exercise.RoutineId);
 
-            var exercisesToShow = new ObservableCollection<ExerciseAddModel>(
-                RoutineExercises.Where(exercise => !WorkoutExercises.Any(workoutExercise => workoutExercise.Id == exercise.Id))
-            );
+            if(response.IsValid && response.Data != null)
+            {
+                RoutineExercises = new ObservableCollection<ExerciseAddModel>(response.Data);
 
-            await popupService.ShowPopupAsync<SuperSetPopUpViewModel>(onPresenting: vm => vm.RoutineExercises = exercisesToShow);
+                var exercisesToShow = new ObservableCollection<ExerciseAddModel>(
+                    RoutineExercises.Where(exercise => !WorkoutExercises.Any(workoutExercise => workoutExercise.Id == exercise.Id))
+                );
+
+                await popupService.ShowPopupAsync<SuperSetPopUpViewModel>(onPresenting: vm => vm.RoutineExercises = exercisesToShow);
+            }
+            else
+            {
+                await popupService.ShowPopupAsync<MessageAlertPopUpViewModel>(onPresenting: vm => vm.ClosePopUp(response.Adapt<PopUpData>()));
+            }
         }
 
         //public async Task GetExerciseByRoutineId()
@@ -119,24 +144,22 @@ namespace BioSportApp.ViewModels.Exercise
         public async Task ShowPopUp()
         {
             await popupService.ShowPopupAsync<StopWatchPopUpViewModel>();
-
         }
 
         [RelayCommand]
         public async Task SaveWorkout()
         {
-            await exerciseService.SaveWorkout(WorkoutExercises);
-            ShowToast();
+            var response = await exerciseService.SaveWorkout(WorkoutExercises);
+
+            await popupService.ShowPopupAsync<MessageAlertPopUpViewModel>(onPresenting: vm => vm.ClosePopUp(response.Adapt<PopUpData>()));
         }
 
         public void Dispose()
         {
-            //WeakReferenceMessenger.Default.UnregisterAll(this);
             WeakReferenceMessenger.Default.Unregister<CloseSuperSetPopUp>(this);
-
         }
 
-        public async void ShowToast()
+        public async void ShowToast(bool isValid)
         {
             //CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
@@ -150,30 +173,34 @@ namespace BioSportApp.ViewModels.Exercise
 
             //CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
+
+            //var backgroundColor = new Color();
+            //var text = "";
+
+            //if (isValid)
+            //{
+            //    text = "Guardado!";
+            //    backgroundColor = new Color(252, 188, 92);
+            //}
+            //else
+            //{
+            //    text = "Ha ocurrido un error!";
+            //    backgroundColor = Colors.Red;
+            //}
+
             //var snackbarOptions = new SnackbarOptions
             //{
-            //    BackgroundColor = Colors.White,
+            //    BackgroundColor = backgroundColor,
             //    TextColor = Colors.Black,
-            //    ActionButtonTextColor = Colors.Red,
             //    CornerRadius = new CornerRadius(10),
-            //    Font = Microsoft.Maui.Font.SystemFontOfSize(14),
-            //    ActionButtonFont = Microsoft.Maui.Font.SystemFontOfSize(14),
-            //    CharacterSpacing = 0.5
+            //    Font = Font.SystemFontOfSize(16),
             //};
 
-            //string text = "This is a Snackbar";
-            //string actionButtonText = "Eliminar";
-            //Action action = async () => await xd();
+            //var snackbar = Snackbar.Make(text,null,"",null, snackbarOptions);
 
-
-            //var snackbar = Snackbar.Make(text, action, actionButtonText, null, snackbarOptions);
+           
 
             //await snackbar.Show(cancellationTokenSource.Token);
-        }
-
-        public async Task xd()
-        {
-
         }
     }
 }

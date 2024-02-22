@@ -55,7 +55,8 @@ namespace BioSportApp
             builder.Services.AddTransientPopup<DeletePopUp, DeletePopUpViewModel>();
             builder.Services.AddTransientPopup<SuperSetPopUp, SuperSetPopUpViewModel>();
             builder.Services.AddTransientPopup<StopWatchPopUp, StopWatchPopUpViewModel>();
-            
+            builder.Services.AddTransientPopup<MessageAlertPopUp, MessageAlertPopUpViewModel>();
+
 #if DEBUG
             builder.Logging.AddDebug();
 #endif
