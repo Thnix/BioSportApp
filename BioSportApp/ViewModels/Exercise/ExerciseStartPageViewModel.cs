@@ -71,7 +71,7 @@ namespace BioSportApp.ViewModels.Exercise
 
             if(response.IsValid && response.Data != null)
             {
-                Exercise = response.Data;
+                Exercise = response.Data.Adapt<ExerciseAddModel>();
 
                 if (Exercise.Sets.Any())
                 {
@@ -79,7 +79,7 @@ namespace BioSportApp.ViewModels.Exercise
                 }
                 else
                 {
-                    AddWorkoutExercises(Exercise);
+                    //AddWorkoutExercises(Exercise);
                 }
             }
             else
@@ -91,27 +91,27 @@ namespace BioSportApp.ViewModels.Exercise
             }
         }
 
-        public void AddWorkoutExercises(ExerciseAddModel exercise)
-        {
-            var e = WorkoutExercises.SingleOrDefault(x => x.Id == exercise.Id);
+        //public void AddWorkoutExercises(ExerciseAddModel exercise)
+        //{
+        //    var e = WorkoutExercises.SingleOrDefault(x => x.Id == exercise.Id);
 
-            if (e == null)
-            {
-                for (int i = 0; i < exercise.SetsNumber; i++)
-                {
-                    exercise.Sets.Add(new SetAddModel
-                    {
-                        Id = Guid.NewGuid(),
-                        Number = $"Serie {i + 1}",
-                        Weight = null,
-                        ExerciseId = exercise.Id,
-                        //Exercise = exercise,
-                    });
-                }
+        //    if (e == null)
+        //    {
+        //        for (int i = 0; i < exercise.SetsNumber; i++)
+        //        {
+        //            exercise.Sets.Add(new SetAddModel
+        //            {
+        //                Id = Guid.NewGuid(),
+        //                Number = $"Serie {i + 1}",
+        //                Weight = null,
+        //                ExerciseId = exercise.Id,
+        //                //Exercise = exercise,
+        //            });
+        //        }
 
-                WorkoutExercises.Add(exercise);
-            }
-        }
+        //        WorkoutExercises.Add(exercise);
+        //    }
+        //}
 
         [RelayCommand]
         public async Task GetExercisesByRoutineId()

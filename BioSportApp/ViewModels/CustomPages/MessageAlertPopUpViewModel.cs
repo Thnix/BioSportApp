@@ -2,6 +2,7 @@
 using BioSportApp.Utils.Messaging.PopUp;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
+using BioSportApp.Common;
 
 namespace BioSportApp.ViewModels.CustomPages
 {
@@ -11,19 +12,34 @@ namespace BioSportApp.ViewModels.CustomPages
         public Color backgroundColor = new();
 
         [ObservableProperty]
-        public string text = "";
+        public string icon = "";
+
+        [ObservableProperty]
+        public string statusText = "";
+
+        [ObservableProperty]
+        public string message = "";
 
         public async void ClosePopUp(PopUpData response)
         {
-            Text = response.Message;
+            int delay;
 
-            BackgroundColor = response.IsValid 
-                ? Color.FromRgb(252, 188, 92) 
-                : Color.FromRgb(198, 51, 41);
+            Message = response.Message;
 
-            int delay = response.IsValid 
-                ? 1500 
-                : 3000;
+            if (response.IsValid)
+            {
+                BackgroundColor = Color.FromRgb(252, 188, 92);
+                Icon = Icons.CircleCheck;
+                StatusText = "ÉXITO";
+                delay = 1500;
+            }
+            else
+            {
+                BackgroundColor = Color.FromRgb(198, 51, 41);
+                Icon = Icons.CircleXmark;
+                StatusText = "ERROR";
+                delay = 3000;
+            }
 
 
             await Task.Delay(delay);

@@ -1,4 +1,5 @@
 ﻿using BioSportApp.Domain;
+using BioSportApp.Models.Exercise;
 using BioSportApp.Models.Routine;
 using Mapster;
 using SQLite;
@@ -12,10 +13,12 @@ namespace BioSportApp.Services
     {
         private readonly BioSportContext bioSportContext;
         private readonly SQLiteAsyncConnection connection;
+        private readonly ExerciseService exerciseService;
 
-        public RoutineService(BioSportContext bioSportContext) 
+        public RoutineService(BioSportContext bioSportContext, ExerciseService exerciseService) 
         { 
             this.bioSportContext = bioSportContext;
+            this.exerciseService = exerciseService;
             connection = bioSportContext.GetConnection(); 
         }
 
@@ -28,6 +31,20 @@ namespace BioSportApp.Services
                 exercise.Id = Guid.NewGuid();
                 exercise.RoutineId = routine.Id;
                 exercise.Routine = routine;
+
+                for (var i = 0; i < exercise.SetsNumber; i++)
+                {
+                    var set = new Set 
+                    { 
+                        Id = Guid.NewGuid(),
+                        Exercise = exercise,
+                        ExerciseId = exercise.Id,
+                        Weight = null,
+                        Number = $"Serie {i+1}"
+                    };
+
+                    exercise.Sets.Add(set);
+                }
             }
 
             await connection.InsertWithChildrenAsync(routine, recursive: true);
@@ -37,25 +54,11 @@ namespace BioSportApp.Services
         {
             var routine = await connection.GetWithChildrenAsync<Routine>(routineToUpdate.Id, recursive: true);
            
-            routine.Date = routineToUpdate.Date;
             routine.Name = routineToUpdate.Name;
 
             await connection.RunInTransactionAsync((SQLiteConnection transaction) =>
             {
-                foreach (var exercise in routine.Exercises)
-                {
-                    transaction.Delete(exercise);
-                }
-
-                foreach (var exercise in routineToUpdate.Exercises)
-                {
-                    var exerciseToAdd = exercise.Adapt<Exercise>();
-                    exerciseToAdd.RoutineId = routine.Id;
-                    exerciseToAdd.Routine = routine;
-
-                    transaction.Insert(exerciseToAdd);
-                    routine.Exercises.Add(exerciseToAdd);
-                };
+                exerciseService.UpdateRoutineExercises(routine, routineToUpdate.Exercises, transaction);
 
                 transaction.Update(routine);
             });

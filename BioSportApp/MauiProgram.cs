@@ -50,6 +50,8 @@ namespace BioSportApp
             //Services
             builder.Services.AddTransient<RoutineService>();
             builder.Services.AddTransient<ExerciseService>();
+            builder.Services.AddTransient<SetService>();
+
 
 
             builder.Services.AddTransientPopup<DeletePopUp, DeletePopUpViewModel>();

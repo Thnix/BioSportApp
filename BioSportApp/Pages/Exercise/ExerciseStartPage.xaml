@@ -46,6 +46,9 @@
                         <DataTemplate x:DataType="exerciseModel:ExerciseAddModel">
                             <CollectionView ItemsSource="{Binding Sets}" Grid.Row="1" Margin="0,0,0,20">
                                 <CollectionView.Header>
+
+                                        
+                                        
                                     <Label
                                         Text="{Binding Name}"
                                         TextColor="Black" 
@@ -56,6 +59,8 @@
                                         FontAttributes="Bold"
                                         Padding="10"
                                         >
+
+  
                                     </Label>
                                 </CollectionView.Header>
 
@@ -86,8 +91,9 @@
 
                 <Button 
                     Text="Guardar" 
+                    FontAttributes="Bold"
                     BackgroundColor="#E9BA76" 
-                    Margin="10"
+                    Margin="40,0,40,10"
                     Command="{Binding SaveWorkoutCommand}"
                     CommandParameter="{Binding WorkoutExercises}"
                 />

@@ -19,60 +19,37 @@
         </Style>
     </toolkit:Popup.Resources>
 
-        <VerticalStackLayout >
-            <Border Padding="20" BackgroundColor="{Binding BackgroundColor}">
-                <VerticalStackLayout>
+    <VerticalStackLayout BackgroundColor="White">
+        <Border Padding="15" BackgroundColor="{Binding BackgroundColor}" StrokeThickness="0">
+            <VerticalStackLayout BackgroundColor="Transparent">
+                <Label
+                    Text="{Binding Icon}"
+                    FontSize="Title"
+                    FontAttributes="Bold"
+                    FontFamily="FASolid"
+                    TextColor="White"
+                    VerticalOptions="CenterAndExpand"
+                    HorizontalOptions="CenterAndExpand"
+                />
 
-                    <Label 
-        Text="{x:Static common:Icons.Xmark}"
-        FontSize="Title"
-        FontAttributes="Bold"
-        FontFamily="FASolid"
-        TextColor="White"
-    
-       
-        VerticalOptions="CenterAndExpand"
-        HorizontalOptions="CenterAndExpand"
+                <Label
+                    Text="{Binding StatusText}"
+                    FontSize="Small"
+                    TextColor="White"
+                    VerticalOptions="CenterAndExpand"
+                    HorizontalOptions="CenterAndExpand"    
+                />
+            </VerticalStackLayout>
+        </Border>
 
-        
-/>
-
-                    <Label 
-        Text="Error"
-        FontSize="Medium"
-        FontAttributes="Bold"
-        FontFamily="FASolid"
-        TextColor="White"
-    
-       
-        VerticalOptions="CenterAndExpand"
-        HorizontalOptions="CenterAndExpand"
-
-        
-/>
-
-                </VerticalStackLayout>
-
-               
-
-
-            </Border>
-
-            <Border Padding="20" BackgroundColor="White">
-                <Label 
-  
-        Text="{Binding Text}"
-        FontSize="Small"
-        TextColor="Black"
-  
-        
-        VerticalOptions="CenterAndExpand"
-        HorizontalOptions="CenterAndExpand"
-/>
-
-            </Border>
-            
-        </VerticalStackLayout>
-        
-   
+        <Border Padding="20" BackgroundColor="White" StrokeThickness="0">
+            <Label 
+                Text="{Binding Message}"
+                FontSize="Small"
+                TextColor="Black"
+                VerticalOptions="CenterAndExpand"
+                HorizontalOptions="CenterAndExpand"
+            />
+        </Border>
+    </VerticalStackLayout>
 </toolkit:Popup>

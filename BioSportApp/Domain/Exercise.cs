@@ -28,11 +28,11 @@ namespace BioSportApp.Domain
         public Routine? Routine { get; set; }
 
         [OneToMany(CascadeOperations = CascadeOperation.All)]
-        [Ignore]
+        
         public ObservableCollection<Set> Sets { get; set; } = [];
 
-        [OneToMany(CascadeOperations = CascadeOperation.All)]
-        [Ignore]
-        public ObservableCollection<WeightRecord> WeightRecords { get; set; } = [];
+        //[OneToMany(CascadeOperations = CascadeOperation.All)]
+        //[Ignore]
+        //public ObservableCollection<WeightRecord> WeightRecords { get; set; } = [];
     }
 }

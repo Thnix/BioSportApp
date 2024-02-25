@@ -18,7 +18,7 @@ namespace BioSportApp.Models.Exercise
 
         public ObservableCollection<SetAddModel> Sets { get; set; } = [];
 
-        public ObservableCollection<WeightRecordAddModel> WeightRecords { get; set; } = [];
+        //public ObservableCollection<WeightRecordAddModel> WeightRecords { get; set; } = [];
     }
 }
 
