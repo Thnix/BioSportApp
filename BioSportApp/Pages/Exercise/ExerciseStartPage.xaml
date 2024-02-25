@@ -68,7 +68,7 @@
                                     <DataTemplate x:DataType="setModel:SetAddModel">
                                         <VerticalStackLayout>
                                             <Grid ColumnDefinitions="*,*" RowDefinitions="*" BackgroundColor="#FCF8F4" >
-                                                <Label Grid.Column="0" Grid.Row="0" Text="{Binding Number}" TextColor="Black" VerticalOptions="Center"/>
+                                                <Label Grid.Column="0" Grid.Row="0" Text="{Binding SetName}" TextColor="Black" VerticalOptions="Center"/>
                                                 <Entry 
                                                     Grid.Column="1" 
                                                     Grid.Row="0" 

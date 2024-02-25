@@ -28,7 +28,7 @@ namespace BioSportApp.ViewModels.Exercise
                 Id = Guid.NewGuid(),
                 Name = "",
                 SetsNumber = null,
-                Repetitions = null
+                Repetitions = null,
             };
 
             Exercises.Add(newExercise);

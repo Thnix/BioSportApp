@@ -6,7 +6,9 @@ namespace BioSportApp.Models.Set
     {
         public Guid Id { get; set; }
 
-        public string Number { get; set; } = string.Empty;
+        public string SetName { get; set; } = string.Empty;
+
+        public int? CurrentNumber { get; set; }
 
         public decimal? Weight { get; set; }
 

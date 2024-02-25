@@ -35,13 +35,15 @@ namespace BioSportApp.Services
                         Exercise = dbExercise,
                         ExerciseId = dbExercise.Id,
                         Weight = null,
-                        Number = $"Serie {i + 1}"
+                        CurrentNumber = i,
+                        SetName = $"Serie {i + 1}"
                     });
                 }
             }
             else if (difference < 0)
             {
-                transaction.DeleteAll(dbExercise.Sets.OrderByDescending(set => set.Number).Take((int)-difference).ToList());
+                var setsToDelete = dbExercise.Sets.OrderByDescending(set => set.CurrentNumber).Take((int)-difference).ToList();
+                transaction.DeleteAll(setsToDelete);
             }
 
             if (newSets.Count > 0)

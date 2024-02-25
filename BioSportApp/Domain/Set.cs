@@ -10,8 +10,11 @@ namespace BioSportApp.Domain
         [Column("Id")]
         public Guid Id { get; set; }
 
-        [Column("Number")]
-        public string Number { get; set; } = string.Empty;
+        [Column("SetName")]
+        public string SetName { get; set; } = string.Empty;
+
+        [Column("CurrentNumber")]
+        public int? CurrentNumber { get; set; }
 
         [Column("Weight")]
         public decimal? Weight { get; set; }

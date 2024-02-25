@@ -1,26 +1,25 @@
-﻿using BioSportApp.Models.Routine;
+﻿using BioSportApp.Common.Messaging;
+using BioSportApp.Models.Routine;
 using BioSportApp.Models.Routine.Messages;
 using BioSportApp.Services;
 using BioSportApp.Utils.Messaging.Routine;
+using BioSportApp.ViewModels.CustomPages;
 using BioSportApp.ViewModels.Exercise;
+using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using Mapster;
 
 namespace BioSportApp.ViewModels.Routine
 {
     [QueryProperty(nameof(RoutineId), "RoutineId")]
-    public partial class RoutineCreatePageViewModel : ObservableObject
+    public partial class RoutineCreatePageViewModel(RoutineService routineService, IPopupService popupService) : ObservableObject
     {
-        public ExerciseViewModel ExerciseViewModel { get; }
+        public ExerciseViewModel ExerciseViewModel { get; } = new ExerciseViewModel();
 
-        private readonly RoutineService routineService;
-
-        public RoutineCreatePageViewModel(RoutineService routineService)
-        {
-            this.routineService = routineService;
-            ExerciseViewModel = new ExerciseViewModel();
-        }
+        private readonly RoutineService routineService = routineService;
+        private readonly IPopupService popupService = popupService;
 
         [ObservableProperty]
         private string routineId = "";
@@ -65,41 +64,58 @@ namespace BioSportApp.ViewModels.Routine
         private async Task CreateRoutine()
         {
             Routine.Exercises = ExerciseViewModel.Exercises;
-
             Routine.Id = Guid.NewGuid();
             Routine.Date = DateTime.Now;
 
-            await routineService.CreateRoutine(Routine);
+            var response = await routineService.CreateRoutine(Routine);
 
-            Routine.Exercises.Clear();
-
-            WeakReferenceMessenger.Default.Send(new SendRoutineMessage(new SendRoutineMessageModel { Routine = Routine, Message = "Add" }));
-
-            await Shell.Current.Navigation.PopAsync();
+            if (response.IsValid)
+            {
+                Routine.Exercises.Clear();
+                WeakReferenceMessenger.Default.Send(new SendRoutineMessage(new SendRoutineMessageModel { Routine = Routine, Message = "Add" }));
+                await Shell.Current.Navigation.PopAsync();
+            }
+            else
+            {
+                await popupService.ShowPopupAsync<MessageAlertPopUpViewModel>(vm => vm.ClosePopUp(response.Adapt<PopUpData>()));
+            } 
         }
 
         private async Task UpdateRoutine()
         {
             Routine.Exercises = ExerciseViewModel.Exercises;
-            await routineService.UpdateRoutine(Routine);
-            Routine.Date = DateTime.Now;
 
-            WeakReferenceMessenger.Default.Send(new SendRoutineMessage( new SendRoutineMessageModel { Routine = Routine, Message = "Update" }));
+            var response = await routineService.UpdateRoutine(Routine);
 
-            await Shell.Current.Navigation.PopAsync();
+            if (response.IsValid)
+            {
+                Routine.Date = DateTime.Now;
+                WeakReferenceMessenger.Default.Send(new SendRoutineMessage(new SendRoutineMessageModel { Routine = Routine, Message = "Update" }));
+                await Shell.Current.Navigation.PopAsync();
+            }
+            else
+            {
+                await popupService.ShowPopupAsync<MessageAlertPopUpViewModel>(vm => vm.ClosePopUp(response.Adapt<PopUpData>()));
+            }
         }
 
         private async void LoadRoutine()
         {
-            var routine = await routineService.GetRoutineById(Guid.Parse(RoutineId));
-            Routine = routine;
-            ExerciseViewModel.Exercises = routine.Exercises;
-            PageTitle = "Editar Rutina";
+            var response = await routineService.GetRoutineById(Guid.Parse(RoutineId));
 
-            WeakReferenceMessenger.Default.Send(new IsRoutineLoading(false));
+            if(response.IsValid && response.Data != null)
+            {
+                Routine = response.Data;
+                ExerciseViewModel.Exercises = response.Data.Exercises;
+                PageTitle = "Editar Rutina";
+
+                WeakReferenceMessenger.Default.Send(new IsRoutineLoading(false));
+            }
+            else
+            {
+                await popupService.ShowPopupAsync<MessageAlertPopUpViewModel>(vm => vm.ClosePopUp(response.Adapt<PopUpData>()));
+            }
         }
-
-
 
         partial void OnRoutineIdChanged(string value)
         {
@@ -113,6 +129,5 @@ namespace BioSportApp.ViewModels.Routine
         {
             ShowError = !value;
         }
-
     }
 }

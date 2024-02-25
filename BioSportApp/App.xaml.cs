@@ -21,11 +21,10 @@ namespace BioSportApp
 
         }
 
-        //protected override async void OnStart()
-        //{
-        //    await bioSportContext.CreateDbTables();
-        //    App.ConfigureMappings();
-        //}
+        protected override async void OnStart()
+        {
+            await bioSportContext.CreateDbTables();
+        }
 
         //private static void ConfigureMappings()
         //{

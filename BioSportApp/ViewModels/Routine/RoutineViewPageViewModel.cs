@@ -1,4 +1,5 @@
-﻿using BioSportApp.Models.Routine;
+﻿using BioSportApp.Common.Messaging;
+using BioSportApp.Models.Routine;
 using BioSportApp.Pages.Exercise;
 using BioSportApp.Pages.Routine;
 using BioSportApp.Services;
@@ -8,6 +9,7 @@ using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using Mapster;
 
 
 namespace BioSportApp.ViewModels.Routine
@@ -47,8 +49,16 @@ namespace BioSportApp.ViewModels.Routine
 
         private async void LoadRoutine(string routineId)
         {
-            var routine = await routineService.GetRoutineById(Guid.Parse(routineId));
-            Routine = routine;
+            var response = await routineService.GetRoutineById(Guid.Parse(routineId));
+
+            if (response.IsValid && response.Data != null)
+            {
+                Routine = response.Data;
+            }
+            else
+            {
+                await popupService.ShowPopupAsync<MessageAlertPopUpViewModel>(vm => vm.ClosePopUp(response.Adapt<PopUpData>()));
+            } 
         }
 
         [RelayCommand]

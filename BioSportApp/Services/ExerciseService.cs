@@ -3,27 +3,18 @@ using BioSportApp.Domain;
 using BioSportApp.Models.Exercise;
 using BioSportApp.Models.Set;
 using Mapster;
-using Microsoft.Maui.Controls;
 using SQLite;
 using SQLiteNetExtensions.Extensions;
 using SQLiteNetExtensionsAsync.Extensions;
-using SQLitePCL;
 using System.Collections.ObjectModel;
 
 namespace BioSportApp.Services
 {
-    public class ExerciseService
+    public class ExerciseService(BioSportContext bioSportContext, SetService setService)
     {
-        private readonly BioSportContext bioSportContext;
-        private readonly SQLiteAsyncConnection connection;
-        private readonly SetService setService;
-
-        public ExerciseService(BioSportContext bioSportContext, SetService setService) 
-        { 
-            this.bioSportContext = bioSportContext;
-            this.setService = setService;
-            connection = bioSportContext.GetConnection();
-        }
+        private readonly BioSportContext bioSportContext = bioSportContext;
+        private readonly SQLiteAsyncConnection connection = bioSportContext.GetConnection();
+        private readonly SetService setService = setService;
 
         public async Task<Response<ExerciseAddModel>> GetExerciseById(Guid id)
         {

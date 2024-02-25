@@ -1,4 +1,5 @@
-﻿using BioSportApp.Models.Routine;
+﻿using BioSportApp.Common.Messaging;
+using BioSportApp.Models.Routine;
 using BioSportApp.Pages.Routine;
 using BioSportApp.Services;
 using BioSportApp.Utils.Messaging.Routine;
@@ -7,6 +8,7 @@ using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using Mapster;
 using System.Collections.ObjectModel;
 
 namespace BioSportApp.ViewModels.Routine
@@ -15,8 +17,6 @@ namespace BioSportApp.ViewModels.Routine
     {
         private readonly RoutineService routineService;
         private readonly IPopupService popupService;
-
-        
 
         public RoutineListPageViewModel(RoutineService routineService, IPopupService popupService)
         {
@@ -44,13 +44,11 @@ namespace BioSportApp.ViewModels.Routine
                 }
             });
 
-
             WeakReferenceMessenger.Default.Register<IsRoutineLoading>(this, (r, m) =>
             {
                 IsRoutineLoading(m.Value);
             });
         }
-
 
         [ObservableProperty]
         public bool isInProgress = false;
@@ -68,7 +66,6 @@ namespace BioSportApp.ViewModels.Routine
             } 
         }
 
-
         [ObservableProperty]
         private ObservableCollection<RoutineAddModel> routines = [];
 
@@ -83,7 +80,11 @@ namespace BioSportApp.ViewModels.Routine
         public async Task ShowPopUpDeleteRoutine(Guid routineId)
         {
             var routineToRemove = Routines.SingleOrDefault(r => r.Id == routineId);
-            await popupService.ShowPopupAsync<DeletePopUpViewModel>(onPresenting: vm => vm.ReceiveRoutine(routineToRemove));
+
+            if(routineToRemove != null)
+            {
+                await popupService.ShowPopupAsync<DeletePopUpViewModel>(onPresenting: vm => vm.ReceiveRoutine(routineToRemove));
+            }
         }
 
         [RelayCommand]
@@ -94,10 +95,15 @@ namespace BioSportApp.ViewModels.Routine
 
         public async Task LoadAllRoutines()
         {
-            if(Routines.Count == 0)
-            {
-                Routines = new ObservableCollection<RoutineAddModel>(await routineService.GetRoutines());
+            var response = await routineService.GetRoutines();
 
+            if(response.IsValid && response.Data != null)
+            {
+                Routines = new ObservableCollection<RoutineAddModel>(response.Data);
+            }
+            else
+            {
+                await popupService.ShowPopupAsync<MessageAlertPopUpViewModel>(vm => vm.ClosePopUp(response.Adapt<PopUpData>()));
             }
         }
 

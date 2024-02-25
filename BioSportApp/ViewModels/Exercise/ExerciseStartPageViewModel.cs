@@ -1,20 +1,16 @@
 ﻿using BioSportApp.Common.Messaging;
 using BioSportApp.Models.Exercise;
-using BioSportApp.Models.Set;
 using BioSportApp.Services;
 using BioSportApp.Utils.Messaging.Exercise;
 using BioSportApp.Utils.Messaging.PopUp;
 using BioSportApp.ViewModels.CustomPages;
 using BioSportApp.ViewModels.Weight;
-using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Mapster;
 using System.Collections.ObjectModel;
-using System.Runtime.InteropServices;
-using Font = Microsoft.Maui.Font;
 
 namespace BioSportApp.ViewModels.Exercise
 {
