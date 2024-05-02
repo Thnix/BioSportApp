@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:BioSportApp.ViewModels.User"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:DataType="vm:UserCreatePageViewModel"
+             x:Class="BioSportApp.Pages.User.UserCreatePage"
+             Title="Crear usuario"
+>
+    <VerticalStackLayout    
+        Spacing="10" 
+        Margin="10"  
+    >
+        <VerticalStackLayout>
+            <Grid     
+                RowDefinitions="*,*,*"    
+                ColumnDefinitions="*,*,*"
+            >
+                <Border  
+                    Grid.Row="0" 
+                    Grid.Column="1"  
+                    WidthRequest="130"    
+                    HeightRequest="130"    
+                    StrokeThickness="5"      
+                    HorizontalOptions="End"    
+                    Stroke="#E9BA76"  
+                >
+                    <Border.StrokeShape>
+                        <Ellipse />
+                    </Border.StrokeShape>
+
+                    <Image 
+                        Source="{Binding Image}" 
+                        Aspect="Fill"
+                    />
+                </Border>
+
+                <Border
+                    Grid.Column="1" 
+                    Grid.ColumnSpan="2"  
+                    BackgroundColor="White"  
+                    HeightRequest="30"   
+                    WidthRequest="30"
+                >
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="15"/>
+                    </Border.StrokeShape>
+
+                    <ImageButton   
+                        Source="camera.png" 
+                        Command="{Binding ShowActionsCommand}"  
+                        BackgroundColor="Transparent"     
+                        WidthRequest="20"   
+                        HeightRequest="20"
+                    />
+                </Border>
+            </Grid>
+        </VerticalStackLayout>
+
+        <Border>
+            <Entry  
+                Placeholder="Nombre" 
+                Keyboard="Text"  
+                Text="{Binding User.Name}"
+            />
+        </Border>
+
+        <Border>
+            <Entry 
+                Placeholder="Primer apellido" 
+                TextColor="Black"  
+                Keyboard="Text" 
+                Text="{Binding User.FirstSurname}"
+            />
+        </Border>
+
+        <Border>
+            <Entry 
+                Placeholder="Segundo apellido" 
+                TextColor="Black"   
+                Keyboard="Text"  
+                Text="{Binding User.SecondSurname}"
+            />
+        </Border>
+
+        <Border>
+            <Entry   
+                Placeholder="Cédula"  
+                TextColor="Black"    
+                Keyboard="Numeric"   
+                Text="{Binding User.Nip}"
+            />
+        </Border>
+
+        <Border>
+            <Entry 
+                Placeholder="Correo" 
+                Keyboard="Email"
+                Text="{Binding User.Email}"
+            />
+        </Border>
+
+        <Border>
+            <Entry 
+                Placeholder="Contraseña" 
+                Keyboard="Text"
+                Text="{Binding User.Password}"
+            />
+        </Border>
+
+        <Border>
+            <Entry 
+                Placeholder="Código asignado"  
+                TextColor="Black" 
+                Keyboard="Numeric"
+                Text="{Binding User.Code}"
+            />
+        </Border>
+
+        <Border Padding="10" >
+            <VerticalStackLayout>
+                <Label   
+                    Text="Fecha de nacimiento"
+                    TextColor="#DAD9D8"
+                />
+
+                <DatePicker  
+                    Format="dd/MM/yyyy"  
+                    Date="{Binding User.BirthdayDate}" 
+                    MinimumDate="01/01/1930"  
+                    MaximumDate="{Binding MaxDate}"
+                />
+            </VerticalStackLayout>
+        </Border>
+
+        <Button 
+            Text="Registrar"
+            TextColor="Black" 
+            BackgroundColor="#FDCA64"
+            Command="{Binding CreateUserCommand}"
+            CommandParameter="{Binding User}"
+        />
+    </VerticalStackLayout>
+</ContentPage> 

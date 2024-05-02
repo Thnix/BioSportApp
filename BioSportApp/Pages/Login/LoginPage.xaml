@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:BioSportApp.ViewModels.Login"
+             xmlns:icons="clr-namespace:BioSportApp.Common;assembly=BioSportApp.Common"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:DataType="vm:LoginPageViewModel"
+             x:Class="BioSportApp.Pages.Login.LoginPage"
+             Title="Iniciar sesión"
+>
+
+    <ContentPage.Behaviors>
+        <toolkit:StatusBarBehavior
+            StatusBarColor="#F78238" 
+            StatusBarStyle="DarkContent"
+        />
+    </ContentPage.Behaviors>
+
+
+
+    <VerticalStackLayout 
+        Spacing="10"
+        Padding="10"
+    >
+        <Image 
+            Source="biosport_logo.png" 
+            HeightRequest="100"
+            WidthRequest="100"
+            VerticalOptions="Center"
+            HorizontalOptions="Center"
+        />
+
+        <Label 
+            Text="Bienvenido a BioSport!"
+            FontSize="Title"
+            VerticalOptions="Center"
+            HorizontalOptions="Center"
+        />
+
+        <Border Margin="0,20,0,0" >
+            <Entry    
+                Text="{Binding UserData.Email}"
+                TextColor="Black"     
+                FontSize="Small"      
+                Placeholder="Correo electrónico"  
+                Keyboard="Email"
+            />
+        </Border>
+
+        <Border>
+            <Grid ColumnDefinitions="*,Auto">
+                <Entry 
+                    Grid.Column="0"
+                    Text="{Binding UserData.Password}"
+                    TextColor="Black"     
+                    FontSize="Small"     
+                    Placeholder="Contraseña"  
+                    IsPassword="{Binding IsPassword}"
+                />
+                <Button
+                    Grid.Column="1"
+                    Text="{Binding PasswordIcon}" 
+                    HorizontalOptions="End" 
+                    VerticalOptions="Center"
+                    FontFamily="FASolid"
+                    BackgroundColor="Transparent"
+                    TextColor="Black"
+                    Command="{Binding ChangePasswordVisibilityCommand}"
+                />
+            </Grid>
+
+        </Border>
+
+        <Button     
+            Text="¿Olvidó la contraseña?"        
+            TextColor="Black"       
+            FontSize="Micro"       
+            Padding="0"       
+            Margin="0,-20,0,0"      
+            BackgroundColor="Transparent"   
+            HorizontalOptions="End"
+        />
+
+        <Button        
+            Text="Ingresar"     
+            FontSize="Small"       
+            BackgroundColor="#F78238"
+            Command="{Binding AutenticateUserCommand}"
+            CommandParameter="{Binding UserData}"
+        />
+
+        <Button      
+            Text="Crear usuario"       
+            FontSize="Small"     
+            BackgroundColor="#FDCA64"
+            Command="{Binding GoToUserCreatePageCommand}"
+        />
+    </VerticalStackLayout>
+</ContentPage>

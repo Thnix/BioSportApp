@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BioSportApp.Pages.Exercise.RoutineExerciseStartPage"
+             xmlns:viewModel="clr-namespace:BioSportApp.ViewModels.RoutineExercise"
+             xmlns:routineExerciseModel="clr-namespace:BioSportApp.ViewModels.RoutineExercise"
+             xmlns:setModel="clr-namespace:BioSportApp.ViewModels.Set"
+             x:DataType="viewModel:RoutineExerciseStartPageViewModel"
+             BackgroundColor="White"
+             >
+    <Shell.TitleView>
+        <Label 
+            Text="Entrenamiento"
+            FontFamily="ParsiBold"
+            TextColor="Black"
+            FontSize="Title"
+            VerticalTextAlignment="Center"
+        />
+    </Shell.TitleView>
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem 
+            IconImageSource="checklist.png"
+            Order="Primary" 
+            Command="{Binding GetExercisesByRoutineIdCommand}"
+            CommandParameter="{Binding RoutineExercise.RoutineId}"
+        />
+        <ToolbarItem 
+            IconImageSource="stopwatch.png"
+            Order="Primary" 
+            Command="{Binding ShowStopWatchPopUpCommand}"
+            CommandParameter="{Binding RoutineExercise.RoutineId}"  
+        />
+    </ContentPage.ToolbarItems>
+
+    <AbsoluteLayout>
+        <ScrollView 
+            AbsoluteLayout.LayoutFlags="All" 
+            AbsoluteLayout.LayoutBounds="1,1,1,1"
+        >
+            <VerticalStackLayout>
+                <CollectionView 
+                    x:Name="workoutExercises" 
+                    ItemsSource="{Binding WorkoutExercises}"
+                >
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="routineExerciseModel:RoutineExerciseViewModel">
+                            <CollectionView 
+                                x:Name="cvRoutineExercises"
+                                ItemsSource="{Binding Sets}" 
+                                Grid.Row="1" 
+                                Margin="0,0,0,20"
+                            >
+                                <CollectionView.Header>
+                                    <Grid 
+                                        ColumnDefinitions="*,Auto"
+                                        BackgroundColor="#FBBD5C" 
+                                    >
+                                        <Label
+                                            Grid.Column="0"
+                                            Text="{Binding Name}"
+                                            TextColor="Black" 
+                                            HorizontalTextAlignment="Center"
+                                            FontSize="Medium"
+                                            LineBreakMode="WordWrap"
+                                            FontAttributes="Bold"
+                                            Padding="10"
+                                        />
+                                        <Button 
+                                            Grid.Column="1"
+                                            Text="X"
+                                            BackgroundColor="Transparent"
+                                            TextColor="Black"
+                                            FontAttributes="Bold"
+                                            FontSize="Small"
+                                            HorizontalOptions="End"
+                                            VerticalOptions="Center"
+                                            Command="{Binding Path=BindingContext.RemoveRoutineExerciseCommand, Source={x:Reference workoutExercises}}"
+                                            CommandParameter="{Binding Id}"
+                                        />
+                                    </Grid>
+                                </CollectionView.Header>
+
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate x:DataType="setModel:SetViewModel">
+                                        <VerticalStackLayout>
+                                            <Grid 
+                                                ColumnDefinitions="*,*" 
+                                                RowDefinitions="*" 
+                                                BackgroundColor="#FCF8F4" 
+                                            >
+                                                <Label 
+                                                    Grid.Column="0" 
+                                                    Grid.Row="0" 
+                                                    Text="{Binding SetName}" 
+                                                    TextColor="Black" 
+                                                    VerticalOptions="Center"
+                                                />
+                                                <Entry 
+                                                    Grid.Column="1" 
+                                                    Grid.Row="0" 
+                                                    Placeholder="Peso" 
+                                                    Text="{Binding Weight}" 
+                                                    TextColor="Black" 
+                                                    VerticalOptions="Center"
+                                                    Keyboard="Numeric"
+                                                />
+                                            </Grid>
+                                            <BoxView 
+                                                Color="Black" 
+                                                HeightRequest="1" 
+                                            />
+                                        </VerticalStackLayout>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <Button 
+                    Text="Guardar" 
+                    FontAttributes="Bold"
+                    BackgroundColor="#E9BA76" 
+                    Margin="40,0,40,10"
+                    Command="{Binding SaveWorkoutCommand}"
+                    CommandParameter="{Binding WorkoutExercises}"
+                />
+            </VerticalStackLayout>
+        </ScrollView>
+    </AbsoluteLayout>
+</ContentPage>

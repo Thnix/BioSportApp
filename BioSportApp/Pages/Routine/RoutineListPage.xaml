@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:model="clr-namespace:BioSportApp.ViewModels.Routine"
+             xmlns:vm="clr-namespace:BioSportApp.ViewModels.Routine"
+             x:DataType="vm:RoutineListPageViewModel"
+             x:Class="BioSportApp.Pages.Routine.RoutineListPage"
+             Title="Rutinas"            
+>
+    <ContentPage.Resources>
+        <Style TargetType="StackLayout">
+            <Setter Property="VisualStateManager.VisualStateGroups">
+                <VisualStateGroupList>
+                    <VisualStateGroup x:Name="CommonStates">
+                        <VisualState x:Name="Normal">
+                            <VisualState.Setters>
+                                <Setter 
+                                    Property="BackgroundColor" 
+                                    Value="#FCF8F4" 
+                                />
+                            </VisualState.Setters>
+                        </VisualState>
+                        <VisualState x:Name="Selected">
+                            <VisualState.Setters>
+                                <Setter 
+                                    Property="BackgroundColor"
+                                    Value="#FBBD5C" 
+                                />
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateGroupList>
+            </Setter>
+        </Style>
+    </ContentPage.Resources>
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem 
+            Order="Primary"
+            Text="Nueva"
+            Command="{Binding GoToCreateRoutinePageCommand}"
+        />
+    </ContentPage.ToolbarItems>
+
+    <ScrollView>
+        <CollectionView 
+            ItemsSource="{Binding Routines}" 
+            SelectionMode="Single"
+            SelectedItem="{Binding SelectedRoutine, Mode=TwoWay}"
+        >
+            <CollectionView.ItemTemplate>
+                <DataTemplate 
+                    x:DataType="{x:Type model:RoutineListViewModel}"
+                >
+                    <StackLayout>
+                        <Grid 
+                            ColumnDefinitions="*" 
+                            RowDefinitions="Auto,Auto"  
+                            Padding="10"
+                            RowSpacing="10" 
+                        >
+                            <Label
+                                Grid.Column="0"
+                                Grid.Row="0"
+                                Text="{Binding Name}" 
+                                TextColor="Black"
+                                FontSize="Small"
+                                HorizontalTextAlignment="Center"
+                                VerticalTextAlignment="Center"
+                            />
+                            <Label 
+                                Grid.Column="0"
+                                Grid.Row="1"
+                                Text="{Binding CreationDate}"
+                                TextColor="Black"
+                                HorizontalTextAlignment="Center"
+                                VerticalTextAlignment="Center"
+                            />
+                        </Grid>
+                        <BoxView 
+                            HeightRequest="1" 
+                            Color="#FBBD5C" 
+                        />
+                    </StackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </ScrollView>
+</ContentPage>

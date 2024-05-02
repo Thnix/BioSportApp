@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="BioSportApp.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:routinePages="clr-namespace:BioSportApp.Pages.Routine"
+    xmlns:profilePages="clr-namespace:BioSportApp.Pages.Profile"
+    xmlns:homePages="clr-namespace:BioSportApp.Pages.Home"
+    xmlns:measurementPages="clr-namespace:BioSportApp.Pages.Measurement"
+    xmlns:sys="clr-namespace:System;assembly=netstandard"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:vm="clr-namespace:BioSportApp.ViewModels.AppShell"
+    x:DataType="vm:AppShellViewModel"
+    xmlns:templates="clr-namespace:BioSportApp.Templates.AppShell"
+    Shell.FlyoutBehavior="Flyout"
+    Shell.TabBarIsVisible="True"
+    Shell.BackgroundColor="#F07E39"
+    Shell.TitleColor="Black"
+    FlyoutBackgroundColor="#F07E39"
+    Shell.TabBarBackgroundColor="#F07E39"
+    Title="BioSportApp"
+>
+    <Shell.Behaviors>
+        <toolkit:StatusBarBehavior
+            StatusBarColor="#F07E39" 
+            StatusBarStyle="DarkContent"
+        />
+    </Shell.Behaviors>
+
+
+    <Shell.FlyoutHeader>
+        <templates:FlyoutHeader />
+    </Shell.FlyoutHeader>
+
+
+    <FlyoutItem FlyoutDisplayOptions="AsMultipleItems">
+        <ShellContent
+            Icon="home.png"
+            Title="Inicio"
+            ContentTemplate="{DataTemplate homePages:HomePage}"
+            Route="HomePage"
+        />
+        <ShellContent 
+            Icon="profile.png"
+            Title="Perfil"
+            ContentTemplate="{DataTemplate profilePages:ProfilePage}"
+            Route="ProfilePage"
+        />
+    </FlyoutItem>
+
+    <FlyoutItem FlyoutDisplayOptions="AsMultipleItems">
+        <ShellContent  
+            Icon="dumbbell.png"  
+            Title="Rutinas"
+            ContentTemplate="{DataTemplate routinePages:RoutineListPage}"
+            Route="RoutineListPage"
+        />
+        <ShellContent
+            Icon="weight.png"
+            Title="Mediciones"
+            ContentTemplate="{DataTemplate measurementPages:MeasurementPage}"
+            Route="MeasurementPagePage"
+        />
+    </FlyoutItem>
+
+    <FlyoutItem FlyoutDisplayOptions="AsMultipleItems">
+        <ShellContent  
+            Icon="configure.png"
+            Title="Configuración"
+            ContentTemplate="{DataTemplate routinePages:RoutineListPage}"
+            Route="RoutineListPage"
+        />
+    </FlyoutItem>
+
+    <MenuItem 
+        Text="Cerrar sesión" 
+        IconImageSource="exit.png" 
+        Command="{Binding LogoutCommand}" 
+        
+    />
+
+
+    <Shell.FlyoutFooter>
+        <VerticalStackLayout 
+            Spacing="10" 
+            Padding="10"
+            BackgroundColor="#fbbd5c"
+        >
+            <Label
+                Text="copyright© 2024 Anthony Martínez" 
+                FontAttributes="Bold"
+                HorizontalOptions="Center"
+                FontSize="Caption"
+            />
+        </VerticalStackLayout>
+    </Shell.FlyoutFooter>
+</Shell>

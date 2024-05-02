@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+               xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+               xmlns:popup="clr-namespace:BioSportApp.Pages.PopUp"
+               xmlns:vm="clr-namespace:BioSportApp.ViewModels.PopUp"
+               x:DataType="vm:MessagePopUpViewModel"
+               x:Class="BioSportApp.Pages.PopUp.MessagePopUp"
+>
+    <toolkit:Popup.Resources>
+        <Style TargetType="{x:Type popup:MessagePopUp}">
+            <Setter 
+                Property="Color" 
+                Value="Transparent" 
+            />
+            <Setter 
+                Property="VerticalOptions" 
+                Value="Center" 
+            />
+            <Setter 
+                Property="HorizontalOptions" 
+                Value="Center" 
+            />
+            <Setter 
+                Property="CanBeDismissedByTappingOutsideOfPopup" 
+                Value="False" 
+            />
+        </Style>
+    </toolkit:Popup.Resources>
+    
+    <VerticalStackLayout BackgroundColor="White">
+        <Border 
+            Padding="15" 
+            BackgroundColor="{Binding BackgroundColor}" 
+            StrokeThickness="0"
+        >
+            <VerticalStackLayout BackgroundColor="Transparent">
+                <Label 
+                    Text="{Binding Icon}"
+                    FontSize="Title"
+                    FontAttributes="Bold"
+                    FontFamily="FASolid"
+                    TextColor="White"
+                    VerticalOptions="CenterAndExpand"
+                    HorizontalOptions="CenterAndExpand"
+                />
+                <Label 
+                    Text="{Binding StatusText}"
+                    FontSize="Small"
+                    TextColor="White"
+                    VerticalOptions="CenterAndExpand"
+                    HorizontalOptions="CenterAndExpand"   
+                />
+            </VerticalStackLayout>
+        </Border>
+
+        <Border 
+            IsVisible="{Binding BtnVisible}"
+            Padding="20" 
+            BackgroundColor="White" 
+            StrokeThickness="0"
+        >
+            <Label 
+                Text="{Binding Message}"
+                FontSize="Small"
+                TextColor="Black"
+                VerticalOptions="CenterAndExpand"
+                HorizontalOptions="CenterAndExpand"
+                LineBreakMode="WordWrap"
+            />
+        </Border>
+
+        <Button 
+            Margin="50,0,50,0"
+            IsVisible="{Binding BtnVisible}"
+            Text="Aceptar"
+            Command="{Binding ClosePopUpCommand}"
+            BackgroundColor="#D91D25"
+        />
+    </VerticalStackLayout>
+</toolkit:Popup>

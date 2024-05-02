@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:popups="clr-namespace:BioSportApp.Pages.PopUp"
+    x:Class="BioSportApp.Pages.PopUp.SuperSetPopUp"
+    xmlns:vm="clr-namespace:BioSportApp.ViewModels.PopUp"
+    xmlns:model="clr-namespace:BioSportApp.ViewModels.RoutineExercise"
+    x:DataType="vm:SuperSetPopUpViewModel"
+>
+    <toolkit:Popup.Resources>
+        <Style TargetType="{x:Type popups:SuperSetPopUp}">
+            <Setter 
+                Property="Size" 
+                Value="300,300" 
+            />
+            <Setter 
+                Property="Color" 
+                Value="White" 
+            />
+            <Setter 
+                Property="HorizontalOptions" 
+                Value="Center" 
+            />
+            <Setter 
+                Property="VerticalOptions" 
+                Value="Center" 
+            />
+            <Setter 
+                Property="CanBeDismissedByTappingOutsideOfPopup" 
+                Value="True" 
+            />
+        </Style>
+
+
+        <Style TargetType="Grid">
+            <Setter Property="VisualStateManager.VisualStateGroups">
+                <VisualStateGroupList>
+                    <VisualStateGroup x:Name="CommonStates">
+                        <VisualState x:Name="Normal">
+                            <VisualState.Setters>
+                                <Setter  
+                                    Property="BackgroundColor"
+                                    Value="White" 
+                                />
+                            </VisualState.Setters>
+                        </VisualState>
+                        <VisualState x:Name="Selected">
+                            <VisualState.Setters>
+                                <Setter 
+                                    Property="BackgroundColor"
+                                    Value="#FBBD5C" 
+                                />
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateGroupList>
+            </Setter>
+        </Style>
+    </toolkit:Popup.Resources>
+
+    <ScrollView>
+        <VerticalStackLayout>
+            <Grid
+                ColumnDefinitions="*,Auto,*" 
+                BackgroundColor="#F07E39"
+            >
+                <Label
+                    Grid.Column="1"
+                    Text="Superserie" 
+                    TextColor="Black" 
+                    FontAttributes="Bold" 
+                    HorizontalOptions="Center" 
+                    VerticalOptions="Center" 
+                    FontSize="Large" 
+                    FontFamily="ParsiBold"
+                />
+
+                <Button 
+                    Grid.Column="2"
+                    Text="X" 
+                    FontAttributes="Bold" 
+                    FontFamily="FASolid"
+                    HorizontalOptions="End" 
+                    VerticalOptions="Fill"
+                    Padding="0"
+                    Margin="0"
+                    Command="{Binding ClosePopUpCommand}"
+                    FontSize="Large"
+                    BackgroundColor="Transparent"
+                />
+            </Grid>
+
+            <VerticalStackLayout>
+                <CollectionView 
+                    x:Name="routineExercises" 
+                    ItemsSource="{Binding RoutineExercises}" 
+                    SelectionMode="Single"
+                    SelectedItem="{Binding SelectedExercise, Mode=TwoWay}"
+                >
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="model:RoutineExerciseViewModel">
+                            <Grid 
+                                ColumnDefinitions="*"
+                                RowDefinitions="*"
+                            >
+                                <Label
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Text="{Binding Name}"
+                                    TextColor="Black"
+                                    FontSize="Small"
+                                    LineBreakMode="WordWrap"
+                                    Padding="10"
+                                />
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
+</toolkit:Popup>

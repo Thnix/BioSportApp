@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BioSportApp.Pages.Routine.RoutineViewPage"
+             xmlns:vm="clr-namespace:BioSportApp.ViewModels.Routine"
+             x:DataType="vm:RoutineViewPageViewModel"
+             xmlns:model="clr-namespace:BioSportApp.ViewModels.RoutineExercise"
+             Title="{Binding Routine.Name}"           
+>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem 
+            Text="Editar" 
+            Command="{Binding GoToEditPageCommand}"
+            CommandParameter="{Binding RoutineId}"
+        />
+        <ToolbarItem 
+            Text="Eliminar" 
+            Command="{Binding ShowPopUpDeleteRoutineCommand}"
+            CommandParameter="{Binding RoutineId}"
+        />
+    </ContentPage.ToolbarItems>
+
+    <VerticalStackLayout>
+        <CollectionView 
+            x:Name="cvRoutineExercises"
+            ItemsSource="{Binding Routine.RoutineExercises}"
+        >
+            <CollectionView.Header>
+                <Grid 
+                    ColumnDefinitions="*,50,50,100" 
+                    Padding="10"
+                    ColumnSpacing="5"
+                >
+                    <Label 
+                        Grid.Column="0" 
+                        Text="Ejercicio" 
+                        TextColor="Black" 
+                        VerticalOptions="Center" 
+                    />
+                    <Label 
+                        Grid.Column="1" 
+                        Text="Series" 
+                        TextColor="Black" 
+                        VerticalOptions="Center" 
+                        HorizontalOptions="Center"
+                    />
+                    <Label 
+                        Grid.Column="2" 
+                        Text="Reps" 
+                        TextColor="Black" 
+                        VerticalOptions="Center" 
+                        HorizontalOptions="Center"
+                    />
+                    <Label 
+                        Grid.Column="3" 
+                        Text="Acción" 
+                        TextColor="Black" 
+                        VerticalOptions="Center" 
+                        HorizontalOptions="Center"
+                    />
+                </Grid>
+            </CollectionView.Header>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="{x:Type model:RoutineExerciseViewModel}">
+                    <Border>
+                        <Grid 
+                            ColumnDefinitions="*,50,50,100" 
+                            Padding="10"
+                            ColumnSpacing="5"
+                        >
+                            <Label
+                                Grid.Column="0"
+                                Text="{Binding Name}"
+                                FontSize="Small"
+                                TextColor="Black"
+                                VerticalOptions="Center" 
+                                LineBreakMode="WordWrap" 
+                            />
+                            <Label
+                                Grid.Column="1"
+                                Text="{Binding SetsNumber}"
+                                FontSize="Small"
+                                VerticalOptions="Center"
+                                HorizontalOptions="Center"
+                            />
+                            <Label
+                                Grid.Column="2"
+                                Text="{Binding Repetitions}"
+                                FontSize="Small"
+                                VerticalOptions="Center" 
+                                HorizontalOptions="Center"
+                            />
+                            <Button
+                                Grid.Column="3"
+                                Text="Iniciar"
+                                VerticalOptions="Center" 
+                                HorizontalOptions="Center"
+                                BackgroundColor="#fbbd5c"
+                                TextColor="Black"
+                                Command="{Binding Path=BindingContext.GoToStartExercisePageCommand, Source={x:Reference cvRoutineExercises}}"
+                                CommandParameter="{Binding Id}"
+                            />
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </VerticalStackLayout>
+</ContentPage>

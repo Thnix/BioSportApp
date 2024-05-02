@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:routineModel="clr-namespace:BioSportApp.Models.Routine;assembly=BioSportApp.Models"
+             xmlns:routineExerciseVm="clr-namespace:BioSportApp.ViewModels.RoutineExercise"
+             xmlns:vm="clr-namespace:BioSportApp.ViewModels.Routine"
+             xmlns:icons="clr-namespace:BioSportApp.Common;assembly=BioSportApp.Common"
+             x:Class="BioSportApp.Pages.Routine.RoutineCreatePage"
+             x:DataType="vm:RoutineCreatePageViewModel"
+             Title="{Binding PageTitle}"
+             BackgroundColor="White"
+>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem 
+            Text="Guardar" 
+            Command="{Binding CreateOrUpdateRoutineCommand}"
+            CommandParameter="{Binding Routine}" 
+        />
+    </ContentPage.ToolbarItems>
+
+    <ScrollView Padding="5">
+        <VerticalStackLayout Spacing="30">
+            <VerticalStackLayout>
+                <Entry 
+                    Placeholder="Nombre"
+                    Text="{Binding Routine.Name}" 
+                    TextColor="Black"
+                    HorizontalTextAlignment="Center"
+                    VerticalTextAlignment="Center"
+                    FontSize="Medium"
+                />
+                <BoxView HeightRequest="1"/>
+            </VerticalStackLayout>
+           
+            <CollectionView 
+                x:Name="cvRoutineExercises"
+                ItemsSource="{Binding RoutineExercisesViewModel.RoutineExercises}"
+            >
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="{x:Type routineExerciseVm:RoutineExerciseViewModel}">
+                        <Grid
+                           ColumnDefinitions="*,Auto,Auto,Auto" 
+                           Padding="0,5"
+                        >
+                            <Button 
+                                Grid.Column="0"
+                                Text="{Binding Name}"
+                                FontSize="Small"
+                                TextColor="Black"
+                                BackgroundColor="#FBBD5C"
+                                CommandParameter="{Binding Id}"
+                                Command="{Binding Path=BindingContext.OpenExercisePickerPopUpCommand, Source={x:Reference cvRoutineExercises}}"
+                                LineBreakMode='WordWrap'
+                            />
+                            <Entry
+                                Grid.Column="1"
+                                Placeholder="Series"
+                                Text="{Binding SetsNumber}"
+                                FontSize="Small"
+                                Keyboard="Numeric"
+                                TextColor="Black"
+                            />
+                            <Entry 
+                                Grid.Column="2"
+                                Text="{Binding Repetitions}"
+                                Placeholder="Reps"
+                                FontSize="Small"
+                                Keyboard="Numeric"
+                                TextColor="Black"
+                            />
+                            <Button 
+                                Grid.Column="3"
+                                FontSize="Medium"
+                                Text="{x:Static icons:Icons.Xmark}"
+                                FontFamily="FASolid"
+                                Command="{Binding Path=BindingContext.RoutineExercisesViewModel.RemoveRoutineExerciseCommand, Source={x:Reference cvRoutineExercises}}"
+                                CommandParameter="{Binding .}"
+                                BackgroundColor="#C63329"
+                            />
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Button 
+                Text="Nuevo"
+                TextColor="Black"
+                Command="{Binding RoutineExercisesViewModel.AddNewRoutineExerciseCommand}" 
+                BackgroundColor="#E9BA76"
+            />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

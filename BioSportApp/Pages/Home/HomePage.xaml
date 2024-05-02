@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:BioSportApp.ViewModels.HomePage"
+             x:DataType="vm:HomePageViewModel"
+             x:Class="BioSportApp.Pages.Home.HomePage"
+             Title="Inicio"
+>
+    <StackLayout>
+        <Border 
+            Padding="10" 
+            Margin="10"
+        >
+            <VerticalStackLayout Spacing="10">
+                <Label 
+                    Text="{Binding WelcomeMessage}"
+                    VerticalOptions="Center" 
+                    HorizontalOptions="Center" 
+                    FontSize="Title"
+                />
+                <HorizontalStackLayout                     
+                    VerticalOptions="Center" 
+                    HorizontalOptions="Center" 
+                    Spacing="15"
+                >
+                    <Label 
+                        Text="{Binding WelcomeIcon}"
+                        VerticalOptions="Center" 
+                        HorizontalOptions="Center" 
+                        FontSize="Title"
+                        HorizontalTextAlignment="Center"
+                        VerticalTextAlignment="Center"
+                        LineBreakMode="WordWrap"
+                        FontFamily="FASolid" 
+                    />
+                    <Label 
+                        Text="{Binding CurrentDate}"
+                        VerticalOptions="Center" 
+                        HorizontalOptions="Center" 
+                        FontSize="Title"
+                    />
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+        </Border>
+
+        <Border 
+            Padding="10" 
+            Margin="10"
+            HorizontalOptions="CenterAndExpand"
+            VerticalOptions="CenterAndExpand"
+        >
+            <!--<Border.Shadow>
+                <Shadow 
+                    Brush="Black"
+                    Offset="10,10"
+                    Opacity="0.8" 
+                />
+            </Border.Shadow>-->
+
+
+            <VerticalStackLayout Spacing="20">
+                <!--<Label 
+                    Text="{Binding CurrentUser.Name}"
+                    VerticalOptions="Center" 
+                    HorizontalOptions="Center" 
+                    FontSize="30"
+                    HorizontalTextAlignment="Center"
+                    VerticalTextAlignment="Center"
+                    LineBreakMode="WordWrap"
+                />-->
+                <Label 
+                    Text="{Binding CurrentUser.Code}"
+                    VerticalOptions="Center" 
+                    HorizontalOptions="Center" 
+                    FontSize="40"
+                    HorizontalTextAlignment="Center"
+                    VerticalTextAlignment="Center"
+                    LineBreakMode="WordWrap"
+                />
+            </VerticalStackLayout>
+        </Border>
+
+
+        <!--<Label 
+            Text="EL USO DEL PAÑO ES OBLIGATORIO"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" 
+            FontSize="Large"
+        />
+
+        <Label 
+            Text="POR FAVOR RECUERDE COLOCAR LAS PESAS EN SU LUGAR"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" 
+            FontSize="Large"
+        />-->
+    </StackLayout>
+</ContentPage>

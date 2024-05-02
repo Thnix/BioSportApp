@@ -1,0 +1,61 @@
+<toolkit:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+               xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+               xmlns:popups="clr-namespace:BioSportApp.Pages.PopUp"
+               x:Class="BioSportApp.Pages.PopUp.DeletePopUp"
+               xmlns:viewModel="clr-namespace:BioSportApp.ViewModels.PopUp"
+               x:DataType="viewModel:DeletePopUpViewModel"
+>
+    <toolkit:Popup.Resources>
+        <Style TargetType="{x:Type popups:DeletePopUp}">
+            <Setter 
+                Property="Size" 
+                Value="200,150" 
+            />
+            <Setter 
+                Property="Color" 
+                Value="#FCF8F4" 
+            />
+            <Setter 
+                Property="HorizontalOptions" 
+                Value="Center" 
+            />
+            <Setter 
+                Property="VerticalOptions" 
+                Value="Center" 
+            />
+            <Setter 
+                Property="CanBeDismissedByTappingOutsideOfPopup" 
+                Value="True" 
+            />
+        </Style>
+    </toolkit:Popup.Resources>
+    
+    
+    <FlexLayout 
+        Direction="Column" 
+        AlignItems="Center" 
+        Padding="10"
+    >
+        <Label 
+            Text="¿Eliminar?" 
+            TextColor="Black" 
+            FontSize="Medium" 
+            FontFamily="ParsiBold" 
+            Margin="10" 
+        />
+        <HorizontalStackLayout Spacing="10">
+            <Button 
+                Text="Confirmar" 
+                BackgroundColor="#C63329"
+                CommandParameter="{Binding RoutineToDelete}"
+                Command="{Binding DeleteRoutineCommand}"
+            />
+            <Button 
+                Text="Cancelar"
+                BackgroundColor="#E9BA76"
+                Command="{Binding ClosePopUpCommand}"
+            />
+        </HorizontalStackLayout>
+    </FlexLayout>
+</toolkit:Popup>

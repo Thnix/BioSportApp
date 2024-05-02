@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+               xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+               x:Class="BioSportApp.Pages.PopUp.ExercisePickerPopUp"
+               xmlns:exerciseVm="clr-namespace:BioSportApp.ViewModels.Exercise"
+               xmlns:popup="clr-namespace:BioSportApp.Pages.PopUp"
+               xmlns:vm="clr-namespace:BioSportApp.ViewModels.PopUp"
+               x:DataType="vm:ExercisePickerPopUpViewModel"
+>
+    <toolkit:Popup.Resources>
+        <Style TargetType="{x:Type popup:ExercisePickerPopUp}">
+            <Setter 
+                Property="Size" 
+                Value="300,400" 
+            />
+            <Setter 
+                Property="Color" 
+                Value="White"
+            />
+        </Style>
+
+        <Style TargetType="Grid">
+            <Setter Property="VisualStateManager.VisualStateGroups">
+                <VisualStateGroupList>
+                    <VisualStateGroup x:Name="CommonStates">
+                        <VisualState x:Name="Normal">
+                            <VisualState.Setters>
+                                <Setter  
+                                    Property="BackgroundColor"
+                                    Value="White" 
+                                />
+                            </VisualState.Setters>
+                        </VisualState>
+                        <VisualState x:Name="Selected">
+                            <VisualState.Setters>
+                                <Setter 
+                                    Property="BackgroundColor"
+                                    Value="#FBBD5C" 
+                                />
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateGroupList>
+            </Setter>
+        </Style>
+    </toolkit:Popup.Resources>
+
+    <Grid 
+        ColumnDefinitions="*" 
+        RowDefinitions="Auto,Auto,*"
+    >
+        <VerticalStackLayout             
+            Grid.Column="0"
+            Grid.Row="0"
+        >
+            <Grid 
+                ColumnDefinitions="*,Auto,*"
+                BackgroundColor="#F07E39"
+            >
+                <Label 
+                    Grid.Column="1"
+                    Text="Ejercicios"
+                    TextColor="Black"
+                    FontSize="Medium"
+                />
+                <Button 
+                    Grid.Column="2"
+                    Text="X"
+                    TextColor="Black"
+                    FontSize="Medium"
+                    HorizontalOptions="End"
+                    BackgroundColor="Transparent"
+                    Command="{Binding ClosePopUpCommand}"
+                />
+            </Grid>
+        </VerticalStackLayout>
+
+        <SearchBar 
+            Grid.Column="0"
+            Grid.Row="1"
+            Placeholder="Buscar"
+            TextColor="Black"
+            BackgroundColor="#FBBD5C"
+            Text="{Binding FilterText}"
+        >
+            <SearchBar.Behaviors>
+                <toolkit:EventToCommandBehavior 
+                    EventName="TextChanged" 
+                    Command="{Binding SearchExercisesCommand}" 
+                />
+            </SearchBar.Behaviors>
+        </SearchBar>
+
+
+        <CollectionView 
+            Grid.Column="0"
+            Grid.Row="2"
+            x:Name="cvAvailableExercises"
+            ItemsSource="{Binding FilteredExercises}"
+            SelectionMode="Single"
+            SelectedItem="{Binding SelectedExercise}"
+            RemainingItemsThreshold="1"
+            RemainingItemsThresholdReachedCommand="{Binding LoadExercisesWhileScrollingCommand}"
+        >
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="{x:Type exerciseVm:ExerciseListViewModel}">
+                    <Grid 
+                        ColumnDefinitions="*"
+                        RowDefinitions="*"
+                    >
+                        <Label
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Text="{Binding Name}"
+                            TextColor="Black"
+                            FontSize="Small"
+                            LineBreakMode="WordWrap"
+                            Padding="10"
+                        />
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+</toolkit:Popup>
